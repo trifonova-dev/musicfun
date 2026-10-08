@@ -1,6 +1,12 @@
+// import {Routing} from "@/common/routing/Routing";
+
+import {Routing} from "@/common/routing";
+
 function App() {
     return (
-        <div>App</div>
+        <>
+            <Routing/>
+        </>
     )
 }
 
