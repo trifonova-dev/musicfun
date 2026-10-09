@@ -1,5 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-import type {PlaylistsResponse} from "@/features/playlists/api/playlistsApi.types";
+import type {CreatePlaylistArgs, PlaylistData, PlaylistsResponse} from "@/features/playlists/api/playlistsApi.types";
 
 export const playlistsApi = createApi({
     reducerPath: 'playlistsApi',
@@ -13,9 +13,21 @@ export const playlistsApi = createApi({
         fetchPlaylists: build.query<PlaylistsResponse, void>({
             query: () => `playlists`,
         }),
-    }),
+        createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistArgs>({
+            query: (CreatePlaylistArgs) => ({
+                url: 'playlists',
+                method: 'post',
+                body: {
+                    data: {
+                        type: "playlists",
+                        attributes: CreatePlaylistArgs
+                    }
+                },
+            }),
+        }),
+    })
 })
 
 // `createApi` создает объект `API`, который содержит все эндпоинты в виде хуков,
 // определенные в свойстве `endpoints`
-export const {useFetchPlaylistsQuery} = playlistsApi
+export const {useFetchPlaylistsQuery, useCreatePlaylistMutation} = playlistsApi
