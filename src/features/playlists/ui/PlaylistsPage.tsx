@@ -2,7 +2,10 @@ import {useFetchPlaylistsQuery} from "@/features/playlists/api/playlistsApi";
 
 export const PlaylistsPage = () => {
 
-    const {data} = useFetchPlaylistsQuery()
+    const {data, isLoading} = useFetchPlaylistsQuery()
+    if (isLoading) {
+        return <h1>Loading...</h1>;
+    }
 
     return (
         <div>
