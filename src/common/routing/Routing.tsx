@@ -3,15 +3,10 @@ import {MainPage} from "@/app/ui/MainPage/MainPage";
 import {TracksPage} from "@/features/tracks/ui/TracksPage";
 import {ProfilePage} from "@/features/playlists/ui/ProfilePage/ProfilePage";
 import {PlaylistsPage} from "@/features/playlists/ui/PlaylistsPage";
-import {PageNotFound} from "@/common/components/PageNotFound/PageNotFound";
+// import {PageNotFound} from "@/common/components/PageNotFound/PageNotFound";
+import {PageNotFound} from "@/common/components";
+import {Path} from "@/common/routing/path";
 
-export const Path = {
-    Main: '/',
-    Playlists: '/playlists',
-    Tracks: '/tracks',
-    Profile: '/profile',
-    NotFound: '*',
-} as const
 
 export const Routing = () => (
     <Routes>
