@@ -6,11 +6,11 @@ export const PlaylistsPage = () => {
 
     const {data} = useFetchPlaylistsQuery()
 
-    const [deletePleylist] = useDeletePlaylistMutation()
+    const [deletePlaylist] = useDeletePlaylistMutation()
 
     const deletePlaylistHandler = (playlistId: string) => {
         if (confirm("Are you sure?")) {
-            deletePleylist(playlistId)
+            deletePlaylist(playlistId)
         }
     }
 
