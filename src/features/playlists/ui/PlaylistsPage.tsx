@@ -1,4 +1,8 @@
-import {useDeletePlaylistMutation, useFetchPlaylistsQuery} from "@/features/playlists/api/playlistsApi";
+import {
+    useDeletePlaylistMutation,
+    useFetchPlaylistsQuery,
+    useUpdatePlaylistMutation
+} from "@/features/playlists/api/playlistsApi";
 import s from "./PlaylistsPage.module.css"
 import {CreatePlaylistForm} from "@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm";
 
@@ -7,11 +11,22 @@ export const PlaylistsPage = () => {
     const {data} = useFetchPlaylistsQuery()
 
     const [deletePlaylist] = useDeletePlaylistMutation()
+    const [updatePlaylist] = useUpdatePlaylistMutation()
 
     const deletePlaylistHandler = (playlistId: string) => {
         if (confirm("Are you sure?")) {
             deletePlaylist(playlistId)
         }
+    }
+    const updatePlaylistHandler = (playlistId: string) => {
+        updatePlaylist({
+            playlistId,
+            body: {
+                title: "update",
+                description: "1",
+                tagIds: []
+            }
+        })
     }
 
     return (
@@ -26,6 +41,7 @@ export const PlaylistsPage = () => {
                             <div>description: {playlist.attributes.description}</div>
                             <div>userName: {playlist.attributes.user.name}</div>
                             <button onClick={() => deletePlaylistHandler(playlist.id)}>Delete</button>
+                            <button onClick={() => updatePlaylistHandler(playlist.id)}>Update</button>
                         </div>
                     )
                 })}
