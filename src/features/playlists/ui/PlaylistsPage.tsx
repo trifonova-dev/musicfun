@@ -6,7 +6,7 @@ import {
 } from "@/features/playlists/api/playlistsApi";
 import s from "./PlaylistsPage.module.css"
 import {CreatePlaylistForm} from "@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm";
-import type {CreatePlaylistArgs, PlaylistData, UpdatePlaylistArgs} from "@/features/playlists/api/playlistsApi.types";
+import type {PlaylistData, UpdatePlaylistArgs} from "@/features/playlists/api/playlistsApi.types";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {useState} from "react";
 import {PlaylistDescription} from "@/features/playlists/ui/ProfilePage/PlaylistDescription";
@@ -26,9 +26,6 @@ export const PlaylistsPage = () => {
             deletePlaylist(playlistId)
         }
     }
-    const updatePlaylistHandler = (playlistId: string) => {
-
-    }
 
     const editPlaylistHandler = (playlist: PlaylistData | null) => {
         if (playlist) {
@@ -46,16 +43,14 @@ export const PlaylistsPage = () => {
         }
     }
 
-    const onSubmit: SubmitHandler<CreatePlaylistArgs> = playlistsResponse => {
-        console.log(playlistsResponse)
-        // updatePlaylist({
-        //     playlistId,
-        //     body: {
-        //         title: "update",
-        //         description: "1",
-        //         tagIds: []
-        //     }
-        // })
+    const onSubmit: SubmitHandler<UpdatePlaylistArgs> = playlistsResponse => {
+        if (!playlistId) return
+        updatePlaylist({
+            playlistId,
+            body: playlistsResponse
+        }).then(() => {
+            setPlaylistId(null)
+        })
     }
 
 
