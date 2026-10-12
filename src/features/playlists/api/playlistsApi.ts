@@ -22,6 +22,11 @@ export const playlistsApi = createApi({
         fetchPlaylists: build.query<PlaylistsResponse, void>({
             query: () => `playlists`,
         }),
+        getOnePlaylist: build.query<{ data: PlaylistData }, string>({
+            query: (playlistId) => ({
+                url: `/playlists/${playlistId}`
+            }),
+        }),
         createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistArgs>({
             query: (CreatePlaylistArgs) => ({
                 url: 'playlists',
