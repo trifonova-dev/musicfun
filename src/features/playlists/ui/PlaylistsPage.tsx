@@ -1,6 +1,7 @@
 import {
     useDeletePlaylistMutation,
     useFetchPlaylistsQuery,
+    useLazyGetOnePlaylistQuery,
     useUpdatePlaylistMutation
 } from "@/features/playlists/api/playlistsApi";
 import s from "./PlaylistsPage.module.css"
@@ -13,7 +14,8 @@ export const PlaylistsPage = () => {
     const [playlistId, setPlaylistId] = useState<string | null>(null)
     const {register, handleSubmit, reset} = useForm<UpdatePlaylistArgs>()
 
-    const {data} = useFetchPlaylistsQuery()
+    const {data: playlistsResponse} = useFetchPlaylistsQuery()
+    const [getOnePlaylist] = useLazyGetOnePlaylistQuery()
 
     const [deletePlaylist] = useDeletePlaylistMutation()
     const [updatePlaylist] = useUpdatePlaylistMutation()
@@ -30,10 +32,12 @@ export const PlaylistsPage = () => {
     const editPlaylistHandler = (playlist: PlaylistData | null) => {
         if (playlist) {
             setPlaylistId(playlist.id)
-            reset({
-                title: playlist.attributes.title,
-                description: playlist.attributes.description,
-                tagIds: playlist.attributes.tags.map((tag) => tag.id),
+            getOnePlaylist(playlist.id).unwrap().then(response => {
+                reset({
+                    title: response.data.attributes.title,
+                    description: response.data.attributes.description,
+                    tagIds: response.data.attributes.tags.map(tag => tag.id)
+                })
             })
         }
         else {
@@ -41,8 +45,8 @@ export const PlaylistsPage = () => {
         }
     }
 
-    const onSubmit: SubmitHandler<CreatePlaylistArgs> = data => {
-        console.log(data)
+    const onSubmit: SubmitHandler<CreatePlaylistArgs> = playlistsResponse => {
+        console.log(playlistsResponse)
         // updatePlaylist({
         //     playlistId,
         //     body: {
@@ -59,7 +63,7 @@ export const PlaylistsPage = () => {
             <h1>Playlists page</h1>
             <CreatePlaylistForm/>
             <div className={s.items}>
-                {data?.data.map(playlist => {
+                {playlistsResponse?.data.map(playlist => {
 
                     const isEditing = playlist.id === playlistId
 

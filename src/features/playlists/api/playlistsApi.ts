@@ -66,5 +66,5 @@ export const {
     useFetchPlaylistsQuery,
     useCreatePlaylistMutation,
     useDeletePlaylistMutation,
-    useUpdatePlaylistMutation
+    useUpdatePlaylistMutation, useGetOnePlaylistQuery, useLazyGetOnePlaylistQuery
 } = playlistsApi
