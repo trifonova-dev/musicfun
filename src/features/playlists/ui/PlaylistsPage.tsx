@@ -9,7 +9,7 @@ import {CreatePlaylistForm} from "@/features/playlists/ui/PlaylistsPage/CreatePl
 import type {PlaylistData, UpdatePlaylistArgs} from "@/features/playlists/api/playlistsApi.types";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {useState} from "react";
-import {PlaylistDescription} from "@/features/playlists/ui/ProfilePage/PlaylistDescription";
+import {PlaylistItem} from "@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem";
 
 export const PlaylistsPage = () => {
     const [playlistId, setPlaylistId] = useState<string | null>(null)
@@ -81,13 +81,11 @@ export const PlaylistsPage = () => {
                                         </button>
                                     </form>
 
-                                    : <div>
-                                        <div>title: {playlist.attributes.title}</div>
-                                        <PlaylistDescription playlistId={playlist.id}/>
-                                        <div>userName: {playlist.attributes.user.name}</div>
-                                        <button onClick={() => deletePlaylistHandler(playlist.id)}>Delete</button>
-                                        <button onClick={() => editPlaylistHandler(playlist)}>Update</button>
-                                    </div>
+                                    : <PlaylistItem
+                                        playlist={playlist}
+                                        deletePlaylistHandler={deletePlaylistHandler}
+                                        editPlaylistHandler={editPlaylistHandler }/>
+
                             }
 
                         </div>
