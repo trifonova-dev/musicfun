@@ -8,6 +8,7 @@ import type {
 
 export const playlistsApi = createApi({
     reducerPath: 'playlistsApi',
+    tagTypes: ["Playlist"],
     baseQuery: fetchBaseQuery({
         baseUrl: import.meta.env.VITE_BASE_URL,
         headers: {
@@ -21,11 +22,14 @@ export const playlistsApi = createApi({
     endpoints: build => ({
         fetchPlaylists: build.query<PlaylistsResponse, void>({
             query: () => `playlists`,
+            providesTags: ["Playlist"],
         }),
         getOnePlaylist: build.query<{ data: PlaylistData }, string>({
             query: (playlistId) => ({
-                url: `/playlists/${playlistId}`
+                url: `/playlists/${playlistId}`,
             }),
+            providesTags: ["Playlist"],
+
         }),
         createPlaylist: build.mutation<{ data: PlaylistData }, CreatePlaylistArgs>({
             query: (CreatePlaylistArgs) => ({
@@ -38,12 +42,15 @@ export const playlistsApi = createApi({
                     }
                 },
             }),
+            invalidatesTags: ["Playlist"],
         }),
         deletePlaylist: build.mutation<void, string>({
             query: (playlistId) => ({
                 url: `/playlists/${playlistId}`,
                 method: 'delete',
-            })
+
+            }),
+            invalidatesTags: ["Playlist"],
         }),
         updatePlaylist: build.mutation<void, { playlistId: string, body: UpdatePlaylistArgs }>({
             query: ({playlistId, body}) => ({
@@ -55,7 +62,8 @@ export const playlistsApi = createApi({
                         attributes: body,
                     }
                 },
-            })
+            }),
+            invalidatesTags: ["Playlist"],
         })
     })
 })
