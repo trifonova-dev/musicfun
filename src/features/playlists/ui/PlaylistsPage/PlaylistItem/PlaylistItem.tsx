@@ -11,6 +11,9 @@ type Props = {
 }
 
 export const PlaylistItem = ({playlist, editPlaylistHandler, deletePlaylistHandler}: Props) => {
+    const originalCover = playlist.attributes.images.main.find(img => img.type === "original")
+    const src = originalCover ? originalCover.url : defaultCover
+
     const [uploadPlaylistCover] = useUploadPlaylistCoverMutation()
     const uploadCoverHandler = (event: ChangeEvent<HTMLInputElement, HTMLInputElement>) => {
         const file = event.target.files?.length && event.target.files[0]
@@ -22,9 +25,11 @@ export const PlaylistItem = ({playlist, editPlaylistHandler, deletePlaylistHandl
             file
         })
     }
+
+
     return (
         <div>
-            <img src={defaultCover} alt="cover" width={'240px'} className={s.cover}/>
+            <img src={src} alt="cover" width={'240px'} className={s.cover}/>
             <input type={"file"} onChange={uploadCoverHandler}/>
             <div>title: {playlist.attributes.title}</div>
             <div>userName: {playlist.attributes.user.name}</div>
