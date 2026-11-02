@@ -30,11 +30,11 @@ export const PlaylistCover = ({playlistId, images}: Props) => {
             return
         }
         if (!allowedTypes.includes(file.type)) {
-            toast('Only JPEG, PNG or GIF images are allowed')
+            toast('Only JPEG, PNG or GIF images are allowed', {type: "error", theme: "colored"},)
         }
 
         if (file.size > maxSize) {
-            toast('Max size is less than ' + maxSize)
+            toast('Max size is less than ' + maxSize, {type: "error", theme: "colored"})
         }
 
         uploadPlaylistCover({

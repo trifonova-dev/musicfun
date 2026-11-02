@@ -12,10 +12,11 @@ import {EditPlaylistForm} from "@/features/playlists/ui/PlaylistsPage/EditPlayli
 import {useForm} from "react-hook-form";
 
 export const PlaylistsPage = () => {
+    const {data} = useFetchPlaylistsQuery({search:"test"})
+
     const [playlistId, setPlaylistId] = useState<string | null>(null)
     const {register, handleSubmit, reset} = useForm<UpdatePlaylistArgs>()
 
-    const {data: playlistsResponse} = useFetchPlaylistsQuery()
     const [getOnePlaylist] = useLazyGetOnePlaylistQuery()
 
     const [deletePlaylist] = useDeletePlaylistMutation()
@@ -47,7 +48,7 @@ export const PlaylistsPage = () => {
             <h1>Playlists page</h1>
             <CreatePlaylistForm/>
             <div className={s.items}>
-                {playlistsResponse?.data.map(playlist => {
+                {data?.data.map(playlist => {
 
                     const isEditing = playlist.id === playlistId
 
