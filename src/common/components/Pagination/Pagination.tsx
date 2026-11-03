@@ -1,4 +1,3 @@
-
 import s from './Pagination.module.css'
 import {getPaginationPages} from "@/common/utils";
 
@@ -8,16 +7,16 @@ type Props = {
     pagesCount: number
 }
 
-export const Pagination = ({ currentPage, setCurrentPage, pagesCount }: Props) => {
+export const Pagination = ({currentPage, setCurrentPage, pagesCount}: Props) => {
     if (pagesCount <= 1) return null
 
     const pages = getPaginationPages(currentPage, pagesCount)
 
     return (
         <div className={s.pagination}>
-            {pages.map((page, idx) =>
+            {pages.map((page, index) =>
                     page === '...' ? (
-                        <span className={s.ellipsis} key={`ellipsis-${idx}`}>
+                        <span className={s.ellipsis} key={`ellipsis-${index}`}>
             ...
           </span>
                     ) : (
