@@ -6,7 +6,7 @@ import {
 import s from "./PlaylistsPage.module.css"
 import {CreatePlaylistForm} from "@/features/playlists/ui/PlaylistsPage/CreatePlaylistForm/CreatePlaylistForm";
 import type {PlaylistData, UpdatePlaylistArgs} from "@/features/playlists/api/playlistsApi.types";
-import {useState} from "react";
+import {type ChangeEvent, useState} from "react";
 import {PlaylistItem} from "@/features/playlists/ui/PlaylistsPage/PlaylistItem/PlaylistItem";
 import {EditPlaylistForm} from "@/features/playlists/ui/PlaylistsPage/EditPlaylistForm/EditPlaylistForm";
 import {useForm} from "react-hook-form";
@@ -16,7 +16,7 @@ import {Pagination} from "@/common/components";
 export const PlaylistsPage = () => {
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
-    const [pageSize, changePageSize] = useState(2)
+    const [pageSize, setPageSize] = useState(2)
 
     const debounceSearch = useDebounceValue(search)
     const {data, isLoading} = useFetchPlaylistsQuery({search: debounceSearch, pageNumber: currentPage, pageSize})
@@ -50,6 +50,16 @@ export const PlaylistsPage = () => {
         }
     }
 
+    const changePageSizeHandler = (size: number) => {
+        setCurrentPage(1)
+        setPageSize(size)
+    }
+    const searchPlaylistHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setSearch(e.currentTarget.value)
+        setCurrentPage(1)
+    }
+
+
     return (
         <div className={s.container}>
             <h1>Playlists page</h1>
@@ -57,7 +67,7 @@ export const PlaylistsPage = () => {
             <input
                 type="search"
                 placeholder={'Search playlist by title'}
-                onChange={e => setSearch(e.currentTarget.value)}
+                onChange={searchPlaylistHandler}
             />
             <div className={s.items}>
                 {!data?.data.length && !isLoading && <h2 style={{fontSize: '40px'}}>Playlist not found 😭😔</h2>}
@@ -90,7 +100,7 @@ export const PlaylistsPage = () => {
                 setCurrentPage={setCurrentPage}
                 pagesCount={data?.meta.pagesCount || 1}
                 pageSize={pageSize}
-                changePageSize={changePageSize}
+                changePageSize={changePageSizeHandler}
             />
         </div>
     )

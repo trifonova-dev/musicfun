@@ -5,7 +5,7 @@ type Props = {
     currentPage: number
     setCurrentPage: (page: number) => void
     pagesCount: number
-    changePageSize: (size: number) => void
+    changePageSize  : (size: number) => void
     pageSize: number
 }
 
