@@ -16,9 +16,10 @@ import {Pagination} from "@/common/components";
 export const PlaylistsPage = () => {
     const [search, setSearch] = useState('')
     const [currentPage, setCurrentPage] = useState(1)
+    const [pageSize, changePageSize] = useState(2)
 
     const debounceSearch = useDebounceValue(search)
-    const {data, isLoading} = useFetchPlaylistsQuery({search: debounceSearch, pageNumber: currentPage, pageSize: 2})
+    const {data, isLoading} = useFetchPlaylistsQuery({search: debounceSearch, pageNumber: currentPage, pageSize})
 
     const [playlistId, setPlaylistId] = useState<string | null>(null)
     const {register, handleSubmit, reset} = useForm<UpdatePlaylistArgs>()
@@ -88,6 +89,8 @@ export const PlaylistsPage = () => {
                 currentPage={currentPage}
                 setCurrentPage={setCurrentPage}
                 pagesCount={data?.meta.pagesCount || 1}
+                pageSize={pageSize}
+                changePageSize={changePageSize}
             />
         </div>
     )
