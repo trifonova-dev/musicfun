@@ -13,7 +13,7 @@ export const baseApi = createApi({
             return headers
         },
     }),
-    keepUnusedDataFor: 60,
-    refetchOnFocus: true,
+    // keepUnusedDataFor: 60,
+    // refetchOnReconnect: true,
     endpoints: () => ({}),
 })
