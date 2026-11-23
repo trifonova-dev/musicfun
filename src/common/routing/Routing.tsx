@@ -1,7 +1,7 @@
 import {Route, Routes} from "react-router";
 import {MainPage} from "@/app/ui/MainPage/MainPage";
 import {TracksPage} from "@/features/tracks/ui/TracksPage";
-import {ProfilePage} from "@/features/playlists/ui/ProfilePage/ProfilePage";
+import {ProfilePage} from "@/features/auth/ui/ProfilePage/ProfilePage";
 import {PlaylistsPage} from "@/features/playlists/ui/PlaylistsPage";
 // import {PageNotFound} from "@/common/components/PageNotFound/PageNotFound";
 import {PageNotFound} from "@/common/components";
