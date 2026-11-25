@@ -12,7 +12,7 @@ export const PlaylistsPage = () => {
     const [pageSize, setPageSize] = useState(2)
 
     const debounceSearch = useDebounceValue(search)
-    const {data, isLoading} = useFetchPlaylistsQuery({
+    const {data, currentData, isLoading, isFetching, status} = useFetchPlaylistsQuery({
             search: debounceSearch,
             pageNumber: currentPage,
             pageSize
@@ -20,6 +20,7 @@ export const PlaylistsPage = () => {
         // pollingInterval: 3000,//each request will repeat each 3 seconds
         // skipPollingIfUnfocused: true,//if unfocus-skip polling interval
     )
+    console.log({isLoading, isFetching, status, currentData, data})
 
 
     const changePageSizeHandler = (size: number) => {
