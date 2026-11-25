@@ -1,10 +1,10 @@
 import {useFetchTracksInfiniteQuery} from "@/features/tracks/api/tracksApi";
 import {useInfiniteScroll} from "@/common/hooks";
-import {TracksList} from "./TracksList";
-import {LoadingTrigger} from "@/features/tracks/ui/LoadingTrigger";
+import {TracksList} from "@/features/tracks/ui/TracksPage/TracksList/TracksList";
+import {LoadingTrigger} from "@/features/tracks/ui/TracksPage/LoadingTrigger/LoadingTrigger";
 
 export const TracksPage = () => {
-    const {data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage} = useFetchTracksInfiniteQuery()
+    const {data, hasNextPage, isFetching, fetchNextPage, isFetchingNextPage} = useFetchTracksInfiniteQuery()
 
     const {observerRef} = useInfiniteScroll({hasNextPage, isFetching, fetchNextPage})
 
