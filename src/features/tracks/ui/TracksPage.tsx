@@ -1,9 +1,11 @@
 import {useFetchTracksInfiniteQuery} from "@/features/tracks/api/tracksApi";
 import styles from "./TracksPage.module.css";
+import {useEffect, useRef} from "react";
 
 export const TracksPage = () => {
     const {data, hasNextPage, isFetching, isLoading, fetchNextPage, isFetchingNextPage} = useFetchTracksInfiniteQuery()
-    // console.log(data)
+
+    const observerRef = useRef<HTMLDivElement>(null);
 
     // const pages = data?.pages.map((page) => page.data).flat() || []
     const pages = data?.pages.flatMap((page) => page.data) || []
@@ -13,6 +15,30 @@ export const TracksPage = () => {
             fetchNextPage()
         }
     }
+
+    useEffect(() => {
+        const observer = new IntersectionObserver((entries) => {
+            if (entries.length > 0 && entries[0].isIntersecting) {
+                console.log(entries)
+                loadMoreHandler()
+            }
+        }, {
+            root: null,
+            rootMargin: "100px"
+        })
+        const currentObserverRef = observerRef.current
+
+        if (currentObserverRef) {
+            observer.observe(currentObserverRef)
+        }
+
+        return () => {
+            if (currentObserverRef) {
+                observer.unobserve(currentObserverRef)
+            }
+        }
+
+    }, [loadMoreHandler])
 
     return (
         <div>
@@ -32,17 +58,23 @@ export const TracksPage = () => {
                     )
                 })}
             </div>
-            {!isLoading && (
-                <>
-                    {hasNextPage ? (
-                        <button onClick={loadMoreHandler} disabled={isFetching}>
-                            {isFetchingNextPage ? 'Loading...' : 'Load More'}
-                        </button>
-                    ) : (
-                        <p>Nothing more to load</p>
-                    )}
-                </>
-            )}
+            {/*{!isLoading && (*/}
+            {/*    <>*/}
+            {/*        {hasNextPage ? (*/}
+            {/*            <button onClick={loadMoreHandler} disabled={isFetching}>*/}
+            {/*                {isFetchingNextPage ? 'Loading...' : 'Load More'}*/}
+            {/*            </button>*/}
+            {/*        ) : (*/}
+            {/*            <p>Nothing more to load</p>*/}
+            {/*        )}*/}
+            {/*    </>*/}
+            {/*)}*/}
+
+            {hasNextPage && (<div ref={observerRef}>
+                {isFetchingNextPage ? <div>Loading more tracks</div> : <div style={{height: "20px"}}/>}
+            </div>)}
+            {!hasNextPage && pages.length > 0 && <p>Nothing more to load</p>}
+
         </div>
     )
 }
