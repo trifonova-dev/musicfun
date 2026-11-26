@@ -5,6 +5,8 @@ import {Pagination} from "@/common/components";
 import {PlaylistsList} from "@/features/playlists/ui/PlaylistsPage/PlaylistsList/PlaylistsList";
 import {useFetchPlaylistsQuery} from "@/features/playlists/api/playlistsApi";
 import {useDebounceValue} from "@/common/hooks";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const PlaylistsPage = () => {
     const [search, setSearch] = useState('')
@@ -32,6 +34,7 @@ export const PlaylistsPage = () => {
         setCurrentPage(1)
     }
 
+    if (isLoading) return <Skeleton baseColor="#7c3aed" highlightColor="#e9d5ff"/>
 
     return (
         <div className={s.container}>
