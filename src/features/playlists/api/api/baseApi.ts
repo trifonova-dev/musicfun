@@ -1,13 +1,14 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+import {toast} from "react-toastify";
 
 export const baseApi = createApi({
     reducerPath: 'baseApi',
     tagTypes: ['Playlist'],
     baseQuery: async (args, api, extraOptions) => {
 
-        await new Promise(resolve => setTimeout(resolve, 2000)) //delay
+        // await new Promise(resolve => setTimeout(resolve, 2000)) //delay
 
-        return fetchBaseQuery({
+        const result = await fetchBaseQuery({
             baseUrl: import.meta.env.VITE_BASE_URL,
             headers: {
                 'API-KEY': import.meta.env.VITE_API_KEY,
@@ -17,6 +18,20 @@ export const baseApi = createApi({
                 return headers
             },
         })(args, api, extraOptions)
+
+        if (result.error) {
+            switch (result.error.status) {
+                case "TIMEOUT_ERROR":
+                    toast(result.error.error)
+                    break
+
+                case 404:
+                    toast(result.error.status)
+
+            }
+        }
+
+        return result
     },
     // keepUnusedDataFor: 60,
     // refetchOnReconnect: true,

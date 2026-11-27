@@ -7,6 +7,7 @@ import {useFetchPlaylistsQuery} from "@/features/playlists/api/playlistsApi";
 import {useDebounceValue} from "@/common/hooks";
 import 'react-loading-skeleton/dist/skeleton.css'
 import {PlaylistSkeleton} from "@/features/playlists/ui/PlaylistsPage/PlaylistsSkeleton/PlaylistsSkeleton";
+import {toast} from "react-toastify";
 
 
 export const PlaylistsPage = () => {
@@ -15,7 +16,7 @@ export const PlaylistsPage = () => {
     const [pageSize, setPageSize] = useState(2)
 
     const debounceSearch = useDebounceValue(search)
-    const {data, currentData, isLoading, isFetching, status} = useFetchPlaylistsQuery({
+    const {data, isError, error, isLoading} = useFetchPlaylistsQuery({
             search: debounceSearch,
             pageNumber: currentPage,
             pageSize
@@ -23,7 +24,27 @@ export const PlaylistsPage = () => {
         // pollingInterval: 3000,//each request will repeat each 3 seconds
         // skipPollingIfUnfocused: true,//if unfocus-skip polling interval
     )
-    console.log({isLoading, isFetching, status, currentData, data})
+
+    if (error) {
+        if ('status' in error) {
+            //FetchBaseQueryError
+            const errMsg = 'error' in error ? error.error :
+                (error.data as { error: string }).error ||
+                (error.data as { message: string }).message ||
+                "Something went wrong"
+
+            toast(errMsg, {type: "error", theme: "colored"})
+        }
+        else {
+
+            // SerializedError
+            const errMsg = error.message || "Something went wrong"
+            toast(errMsg, {type: "error", theme: "colored"})
+        }
+        //
+    }
+
+    console.log({isError, error})
 
 
     const changePageSizeHandler = (size: number) => {

@@ -11,7 +11,7 @@ export const playlistsApi = baseApi.injectEndpoints({
     endpoints: build => ({
         fetchPlaylists: build.query<PlaylistsResponse, FetchPlaylistsArgs>({
             query: (params) => ({
-                url: `playlists`,
+                url: `playlists`, //ошибка в url
                 params
             }),
             providesTags: ["Playlist"],
